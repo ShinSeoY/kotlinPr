@@ -5,9 +5,11 @@ import com.my.kotlinPr.service.CourtService
 import com.my.kotlinPr.utils.logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/court")
 class CourtController(
         @Autowired var courtService: CourtService
 ){
