@@ -41,7 +41,7 @@ fun main() {
     list3.add("2")
 
     println("---------------------------------------- nullable")
-    var name : String? = null
+    var name : String? = "not null"
 
 //    var nonNullName: String = name // nonNullName은 null이면 안되고 name은 null이 가능하므로 타입오류
     var nonNullName: String = name?: "i am null" // name == Null -> i am null을 반환
@@ -92,12 +92,28 @@ fun main() {
 
     println("---------------------------------------- 고차함수")
 //    myFun(10, {print("함수중")}) 아래처럼 밖으로 뺼수 있음 - 후행 람다(마지막 람다식만 밖으로 뺼수 있음)
-    myFun(10) { print("함수중") }
+    myFun(10) { println("함수중") }
+    println(myLamda(0.1){a: Double -> a > 1})
+    val newnew: ArrayList<Person> = arrayListOf <Person>()
+    persons.map {
+        if (it.age > 10) newnew.add(it)
+    }
+    println(newnew)
+
+    println("---------------------------------------- Scope functions")
+//    null 체크가 필요하면 → let
+//    객체 초기화/설정이 필요하면 → apply
+//    여러 속성/메서드를 사용해야 하면 → with
+//    계산된 값을 반환해야 하면 → run
+//    부가 작업이 필요하면 → also
+
 }
 
 fun sum(a: Int, b: Int, c: Int = 0) = a + b + c
 
-class Person(val name: String, var age: Int)
+data class Person(val name: String, var age: Int)
+
+class NewPerson
 
 // equals, hashCode, toString 재정의 해줌
 data class PersonData(val name: String, var age: Int)
@@ -136,3 +152,10 @@ fun myFun(a: Int, myFunction: () -> Unit) { // unit == void
     println("$a 함수 시작")
     myFunction()
 }
+
+fun myLamda(a: Double, lam : (a: Double) -> Boolean) : String {
+    return if(lam(a)) "big~~" else "small~~"
+}
+
+val persons = arrayListOf<Person>(Person("일길동", 10), Person("이길동", 20), Person("삼길동", 30))
+
