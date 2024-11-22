@@ -105,7 +105,8 @@ fun main() {
 //    객체 초기화/설정이 필요하면 → apply
 //    여러 속성/메서드를 사용해야 하면 → with
 //    계산된 값을 반환해야 하면 → run
-//    부가 작업이 필요하면 → also
+//    객체 자신을 반환, 부가 작업이 필요하면 → also
+    solution(intArrayOf(1,2,3,4,6,7,8,0))
 
 }
 
@@ -159,3 +160,27 @@ fun myLamda(a: Double, lam : (a: Double) -> Boolean) : String {
 
 val persons = arrayListOf<Person>(Person("일길동", 10), Person("이길동", 20), Person("삼길동", 30))
 
+
+fun solution(ingredient: IntArray): Int {
+    var sum = 0
+    var list = arrayListOf<Int>()
+    for(i in ingredient){
+        list.add(i)
+        if( list.size >= 4 && i == 1 && i-1 == 3 && i-2 == 2 && i-3 == 1) {
+            sum ++
+            repeat(4) {
+                list.removeAt(list.size - 1)
+            }
+        }
+    }
+    return sum
+}
+
+fun myFun(ingredient: IntArray): IntArray {
+    var indexOfOne = ingredient.indexOf(1)
+//    var res = ingredient.slice(IntRange(maxOf(0, indexOfOne - 3), indexOfOne +1))
+    ingredient.filterIndexed { index, _ ->
+                index < maxOf(0, indexOfOne - 3) || index >= indexOfOne
+            }
+    return ingredient
+}

@@ -1,6 +1,5 @@
 package com.my.kotlinPr.entity
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.vladmihalcea.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
@@ -10,29 +9,18 @@ import java.time.LocalDateTime
 
 @Entity
 @Table
-class Example(
+class ExampleSub(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = 0,
+        var id: Long,
 
         @Column
         var name: String,
 
-        @Type(JsonType::class)
-        @Column(columnDefinition = "integer[]")
-        val numberArray: Array<Int>,
-
-        @Type(JsonType::class)
-        @Column(columnDefinition = "text[]")
-        val stringArray: Array<String>,
-
-        @Type(JsonType::class)
-        @Column(columnDefinition = "json")
-        val jsonData: Map<String, Any>,
-
-        @OneToMany(mappedBy = "example")
-        var exampleSubs: MutableSet<ExampleSub>? = null,
+        @ManyToOne(fetch = FetchType.LAZY, optional = false)
+        @JoinColumn(name = "exampleId")
+        var example: Example,
 
         @CreatedDate
         var createdAt: LocalDateTime? = null,
