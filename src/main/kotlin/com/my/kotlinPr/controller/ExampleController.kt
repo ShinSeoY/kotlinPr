@@ -2,21 +2,23 @@ package com.my.kotlinPr.controller
 
 import com.my.kotlinPr.dto.ExampleRequestDto
 import com.my.kotlinPr.dto.ExampleResponseDto
-import com.my.kotlinPr.entity.Court
-import com.my.kotlinPr.service.CourtService
+import com.my.kotlinPr.dto.ExampleSubRequestDto
+import com.my.kotlinPr.dto.ExampleSubResponseDto
 import com.my.kotlinPr.service.ExampleService
 import com.my.kotlinPr.utils.logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.Objects
 
 @RestController
 @RequestMapping("/example")
 class ExampleController(
         @Autowired var exampleService: ExampleService
-){
+) {
     private val log = logger<ExampleController>()
+
+    @PostMapping("/sub")
+    fun saveSub(@RequestBody exampleSub: ExampleSubRequestDto): ExampleSubResponseDto = exampleService.saveSub(exampleSub)
 
     @GetMapping("/{id}")
     fun findOne(@PathVariable id: Long): ExampleResponseDto {
@@ -24,7 +26,7 @@ class ExampleController(
     }
 
     @GetMapping("")
-    fun findAll(): ExampleResponseDto{
+    fun findAll(): ExampleResponseDto {
         return exampleService.findAll()
     }
 

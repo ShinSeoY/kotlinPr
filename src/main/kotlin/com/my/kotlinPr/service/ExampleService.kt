@@ -1,20 +1,17 @@
 package com.my.kotlinPr.service
 
-import com.my.kotlinPr.dto.BaseResponseDto
-import com.my.kotlinPr.dto.ExampleRequestDto
-import com.my.kotlinPr.dto.ExampleResponse
-import com.my.kotlinPr.dto.ExampleResponseDto
-import com.my.kotlinPr.entity.Court
+import com.my.kotlinPr.dto.*
 import com.my.kotlinPr.entity.Example
-import com.my.kotlinPr.repository.CourtRepository
+import com.my.kotlinPr.entity.ExampleSub
 import com.my.kotlinPr.repository.ExampleRepository
-import org.apache.catalina.User
+import com.my.kotlinPr.repository.ExampleSubRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class ExampleService(
-        private val exampleRepository: ExampleRepository
+        private val exampleRepository: ExampleRepository,
+        private val exampleSubRepository: ExampleSubRepository
 ) {
 
 //    1. also를 사용한 로깅과 체이닝
@@ -29,13 +26,23 @@ class ExampleService(
 //                ?.let { "${it.name}<${it.email}>" }
 //    }
 
+    fun saveSub(exampleSubRequestDto: ExampleSubRequestDto): ExampleSubResponseDto {
+        try {
+            val example = exampleRepository.findByIdOrNull(exampleSubRequestDto.exampleId)
+                    ?: throw Error("example is not exist")
+            return ExampleSubResponseDto.success(exampleSubRepository.save(exampleSubRequestDto.toEntity(example)).toResponseDto())
+        } catch (e: Exception) {
+            return ExampleSubResponseDto.error(e.message ?: "")
+        }
+    }
+
     fun findAll(): ExampleResponseDto {
         return ExampleResponseDto.success(exampleRepository.findAll().map { it.toResponseDto() })
     }
 
     fun findOne(id: Long): ExampleResponseDto {
         return exampleRepository.findByIdOrNull(id)
-                ?.let{
+                ?.let {
                     ExampleResponseDto.success(listOf(it.toResponseDto()))
                 } ?: ExampleResponseDto.error("empty data")
     }
@@ -55,6 +62,14 @@ class ExampleService(
                     jsonData = this.jsonData,
                     createdAt = this.createdAt,
                     updatedAt = this.updatedAt
+            )
 
+    fun ExampleSub.toResponseDto(): ExampleSubResponse =
+            ExampleSubResponse(
+                    id = this.id,
+                    name = this.name,
+                    exampleId = this.example.id,
+                    createdAt = this.createdAt,
+                    updatedAt = this.updatedAt
             )
 }
