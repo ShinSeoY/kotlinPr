@@ -3,11 +3,27 @@ package com.my.kotlinPr.dto
 import java.time.LocalDateTime
 
 class ExampleResponseDto(
-        code: String = "200",
-        result: String = "success",
-        error: String? = null,
-        val exampleResponse: ExampleResponse? = null
-) : BaseResponseDto(code, result, error)
+        code: String,
+        result: String,
+        error: String?,
+        val exampleResponse: List<ExampleResponse>?
+) : BaseResponseDto(code, result, error){
+    companion object {
+        fun success(response: List<ExampleResponse>?) = ExampleResponseDto(
+                code = "200",
+                result = "success",
+                error = null,
+                exampleResponse = response
+        )
+
+        fun error(errorMessage: String) = ExampleResponseDto(
+                code = "400",
+                result = "error",
+                error = errorMessage,
+                exampleResponse = null
+        )
+    }
+}
 
 class ExampleResponse(val id: Long? = null,
                       val name: String? = null,

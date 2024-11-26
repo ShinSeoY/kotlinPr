@@ -19,19 +19,19 @@ class ExampleController(
     private val log = logger<ExampleController>()
 
     @GetMapping("/{id}")
-    fun findOne(@PathVariable id: Long): ExampleResponseDto? {
+    fun findOne(@PathVariable id: Long): ExampleResponseDto {
         return exampleService.findOne(id)
     }
 
     @GetMapping("")
-    fun findAll(): List<ExampleResponseDto>{
+    fun findAll(): ExampleResponseDto{
         return exampleService.findAll()
     }
 
     @PostMapping("")
     fun save(@RequestBody example: ExampleRequestDto): ExampleResponseDto = exampleService.save(example)
 
-    @DeleteMapping("")
-    fun delete(id: Long) = ResponseEntity.ok().also { exampleService.delete(id) }
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Long) = ResponseEntity.ok().also { exampleService.delete(id) }
 
 }

@@ -29,25 +29,25 @@ class ExampleService(
 //                ?.let { "${it.name}<${it.email}>" }
 //    }
 
-    fun findAll(): List<ExampleResponseDto> {
-        return exampleRepository.findAll().map{it.toResponseDto()}
+    fun findAll(): ExampleResponseDto {
+        return ExampleResponseDto.success(exampleRepository.findAll().map { it.toResponseDto() })
     }
 
-    fun findOne(id: Long): ExampleResponseDto? {
+    fun findOne(id: Long): ExampleResponseDto {
         return exampleRepository.findByIdOrNull(id)
                 ?.let{
-                   it.toResponseDto()
-                } ?: ExampleResponseDto("500", "fail", "null")
+                    ExampleResponseDto.success(listOf(it.toResponseDto()))
+                } ?: ExampleResponseDto.error("empty data")
     }
 
     fun save(exampleRequestDto: ExampleRequestDto): ExampleResponseDto {
-        return exampleRepository.save(exampleRequestDto.toEntity()).toResponseDto()
+        return ExampleResponseDto.success(listOf(exampleRepository.save(exampleRequestDto.toEntity()).toResponseDto()))
     }
 
     fun delete(id: Long) = exampleRepository.deleteById(id)
 
-    fun Example.toResponseDto() = ExampleResponseDto(
-            exampleResponse = ExampleResponse(
+    fun Example.toResponseDto(): ExampleResponse =
+            ExampleResponse(
                     id = this.id,
                     name = this.name,
                     numberArray = this.numberArray,
@@ -55,6 +55,6 @@ class ExampleService(
                     jsonData = this.jsonData,
                     createdAt = this.createdAt,
                     updatedAt = this.updatedAt
+
             )
-    )
 }

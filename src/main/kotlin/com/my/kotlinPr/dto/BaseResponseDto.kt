@@ -1,7 +1,7 @@
 package com.my.kotlinPr.dto
 
 open class BaseResponseDto(
-        code: String,
-        result: String,
-        error: String?
+       open val code: String,
+       open val result: String,
+       open val error: String?
 )
