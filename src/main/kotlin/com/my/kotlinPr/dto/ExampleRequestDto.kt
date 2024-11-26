@@ -4,9 +4,9 @@ import com.my.kotlinPr.entity.Example
 
 class ExampleRequestDto (
     val name: String,
-    val numberArray: Array<Int>,
-    val stringArray: Array<String>,
-    val jsonData: Map<String, Any>,
+    val numberArray: Array<Int>?,
+    val stringArray: Array<String>?,
+    val jsonData: Map<String, Any>?,
 ){
     fun toEntity() = Example(
             name = this.name,

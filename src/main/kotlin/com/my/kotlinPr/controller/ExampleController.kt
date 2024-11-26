@@ -23,7 +23,7 @@ class ExampleController(
         return exampleService.findOne(id)
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     fun findAll(): List<ExampleResponseDto>{
         return exampleService.findAll()
     }

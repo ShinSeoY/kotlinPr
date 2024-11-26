@@ -1,6 +1,7 @@
 package com.my.kotlinPr.entity
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.vladmihalcea.hibernate.type.array.IntArrayType
+import com.vladmihalcea.hibernate.type.array.StringArrayType
 import com.vladmihalcea.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
@@ -19,17 +20,17 @@ class Example(
         @Column
         var name: String,
 
-        @Type(JsonType::class)
+        @Type(IntArrayType::class)
         @Column(columnDefinition = "integer[]")
-        val numberArray: Array<Int>,
+        val numberArray: Array<Int>?,
 
-        @Type(JsonType::class)
+        @Type(StringArrayType::class)
         @Column(columnDefinition = "text[]")
-        val stringArray: Array<String>,
+        val stringArray: Array<String>?,
 
         @Type(JsonType::class)
-        @Column(columnDefinition = "json")
-        val jsonData: Map<String, Any>,
+        @Column(columnDefinition = "jsonb")
+        val jsonData: Map<String, Any>?,
 
         @OneToMany(mappedBy = "example")
         var exampleSubs: MutableSet<ExampleSub>? = null,
