@@ -1,18 +1,29 @@
 package com.my.kotlinPr.service
 
+import com.my.kotlinPr.controller.ExampleController
 import com.my.kotlinPr.dto.*
 import com.my.kotlinPr.entity.Example
 import com.my.kotlinPr.entity.ExampleSub
+import com.my.kotlinPr.entity.QExample
+import com.my.kotlinPr.entity.QExampleSub
 import com.my.kotlinPr.repository.ExampleRepository
 import com.my.kotlinPr.repository.ExampleSubRepository
+import com.my.kotlinPr.utils.logger
+import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class ExampleService(
         private val exampleRepository: ExampleRepository,
-        private val exampleSubRepository: ExampleSubRepository
+        private val exampleSubRepository: ExampleSubRepository,
+        private val jpaQueryFactory: JPAQueryFactory
 ) {
+
+    private val log = logger<ExampleService>()
+
+    val qExample = QExample.example
+    val qExampleSub = QExampleSub.exampleSub
 
 //    1. also를 사용한 로깅과 체이닝
 //    fun saveUser(user: User) = user
@@ -25,6 +36,19 @@ class ExampleService(
 //        return userRepository.findById(id)
 //                ?.let { "${it.name}<${it.email}>" }
 //    }
+
+    fun findOneWithDsl(id: Long): ExampleResponseDto {
+        try {
+            val query = jpaQueryFactory
+                    .selectFrom(qExample)
+                    .leftJoin(qExample.exampleSubs).fetchJoin()
+                    .where(qExample.id.eq(id))
+            val example = query.fetchOne() ?: throw Error("example is not exist")
+            return ExampleResponseDto.success(listOf(example.toResponseDto()))
+        } catch (e: Exception) {
+            return ExampleResponseDto.error(e.message ?: "")
+        }
+    }
 
     fun saveSub(exampleSubRequestDto: ExampleSubRequestDto): ExampleSubResponseDto {
         try {

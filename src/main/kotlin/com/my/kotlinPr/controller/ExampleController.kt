@@ -4,6 +4,7 @@ import com.my.kotlinPr.dto.ExampleRequestDto
 import com.my.kotlinPr.dto.ExampleResponseDto
 import com.my.kotlinPr.dto.ExampleSubRequestDto
 import com.my.kotlinPr.dto.ExampleSubResponseDto
+import com.my.kotlinPr.entity.Example
 import com.my.kotlinPr.service.ExampleService
 import com.my.kotlinPr.utils.logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +17,11 @@ class ExampleController(
         @Autowired var exampleService: ExampleService
 ) {
     private val log = logger<ExampleController>()
+
+    @GetMapping("/dsl/{id}")
+    fun findOneWithDsl(@PathVariable id: Long): ExampleResponseDto {
+        return exampleService.findOneWithDsl(id)
+    }
 
     @PostMapping("/sub")
     fun saveSub(@RequestBody exampleSub: ExampleSubRequestDto): ExampleSubResponseDto = exampleService.saveSub(exampleSub)
