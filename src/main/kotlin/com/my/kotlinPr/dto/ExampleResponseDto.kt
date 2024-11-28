@@ -6,13 +6,26 @@ class ExampleResponseDto(
         code: String,
         result: String,
         error: String?,
+        index: Int,
+        size: Int,
         val exampleResponse: List<ExampleResponse>?
-) : BaseResponseDto(code, result, error) {
+) : BaseResponseDto(code, result, error, index, size) {
     companion object {
+        fun success(index: Int, size: Int, response: List<ExampleResponse>?) = ExampleResponseDto(
+                code = "200",
+                result = "success",
+                error = null,
+                index = index,
+                size = size,
+                exampleResponse = response
+        )
+
         fun success(response: List<ExampleResponse>?) = ExampleResponseDto(
                 code = "200",
                 result = "success",
                 error = null,
+                index = 0,
+                size = 0,
                 exampleResponse = response
         )
 
@@ -20,6 +33,8 @@ class ExampleResponseDto(
                 code = "400",
                 result = "error",
                 error = errorMessage,
+                index = 0,
+                size = 0,
                 exampleResponse = null
         )
     }

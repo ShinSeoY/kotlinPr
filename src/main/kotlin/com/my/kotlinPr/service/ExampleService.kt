@@ -9,6 +9,7 @@ import com.my.kotlinPr.repository.custom.ExampleCustomRepository
 import com.my.kotlinPr.repository.standard.ExampleRepository
 import com.my.kotlinPr.repository.standard.ExampleSubRepository
 import com.my.kotlinPr.utils.logger
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -42,6 +43,13 @@ class ExampleService(
         } catch (e: Exception) {
             return ExampleResponseDto.error(e.message ?: "")
         }
+    }
+
+    fun findAllWithDslAndPageable(page: Map<String, Any>): ExampleResponseDto {
+        val index = page["index"] as? Int ?: 0
+        val size = page["size"] as? Int ?: 10
+        val exampleResponseList = exampleCustomRepository.findWithSubsByExampleIdWithPaging(PageRequest.of(index, size)).toList().map { it.toResponseDto() }
+        return ExampleResponseDto.success(index, size, exampleResponseList)
     }
 
     fun saveSub(exampleSubRequestDto: ExampleSubRequestDto): ExampleSubResponseDto {

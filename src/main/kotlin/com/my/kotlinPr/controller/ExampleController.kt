@@ -23,6 +23,11 @@ class ExampleController(
         return exampleService.findOneWithDsl(id)
     }
 
+    @PostMapping("/dsl")
+    fun findAllWithDslAndPageable(@RequestBody page: Map<String, Any> ): ExampleResponseDto {
+        return exampleService.findAllWithDslAndPageable(page)
+    }
+
     @PostMapping("/sub")
     fun saveSub(@RequestBody exampleSub: ExampleSubRequestDto): ExampleSubResponseDto = exampleService.saveSub(exampleSub)
 
