@@ -1,7 +1,7 @@
 package com.my.kotlinPr.service
 
 import com.my.kotlinPr.entity.Court
-import com.my.kotlinPr.repository.CourtRepository
+import com.my.kotlinPr.repository.standard.CourtRepository
 import org.springframework.stereotype.Service
 
 @Service

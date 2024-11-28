@@ -1,4 +1,4 @@
-package com.my.kotlinPr.repository
+package com.my.kotlinPr.repository.standard
 
 import com.my.kotlinPr.entity.Court
 import org.springframework.data.jpa.repository.JpaRepository

@@ -1,23 +1,22 @@
 package com.my.kotlinPr.service
 
-import com.my.kotlinPr.controller.ExampleController
 import com.my.kotlinPr.dto.*
 import com.my.kotlinPr.entity.Example
 import com.my.kotlinPr.entity.ExampleSub
 import com.my.kotlinPr.entity.QExample
 import com.my.kotlinPr.entity.QExampleSub
-import com.my.kotlinPr.repository.ExampleRepository
-import com.my.kotlinPr.repository.ExampleSubRepository
+import com.my.kotlinPr.repository.custom.ExampleCustomRepository
+import com.my.kotlinPr.repository.standard.ExampleRepository
+import com.my.kotlinPr.repository.standard.ExampleSubRepository
 import com.my.kotlinPr.utils.logger
-import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class ExampleService(
         private val exampleRepository: ExampleRepository,
-        private val exampleSubRepository: ExampleSubRepository,
-        private val jpaQueryFactory: JPAQueryFactory
+        private val exampleCustomRepository: ExampleCustomRepository,
+        private val exampleSubRepository: ExampleSubRepository
 ) {
 
     private val log = logger<ExampleService>()
@@ -39,12 +38,7 @@ class ExampleService(
 
     fun findOneWithDsl(id: Long): ExampleResponseDto {
         try {
-            val query = jpaQueryFactory
-                    .selectFrom(qExample)
-                    .leftJoin(qExample.exampleSubs).fetchJoin()
-                    .where(qExample.id.eq(id))
-            val example = query.fetchOne() ?: throw Error("example is not exist")
-            return ExampleResponseDto.success(listOf(example.toResponseDto()))
+            return ExampleResponseDto.success(exampleCustomRepository.findWithSubsByExampleId(id).map { it.toResponseDto() })
         } catch (e: Exception) {
             return ExampleResponseDto.error(e.message ?: "")
         }
