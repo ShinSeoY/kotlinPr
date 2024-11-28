@@ -61,7 +61,8 @@ class ExampleService(
                     stringArray = this.stringArray,
                     jsonData = this.jsonData,
                     createdAt = this.createdAt,
-                    updatedAt = this.updatedAt
+                    updatedAt = this.updatedAt,
+                    exampleSubResponseList = this.exampleSubs?.map { it.toResponseDto() }
             )
 
     fun ExampleSub.toResponseDto(): ExampleSubResponse =

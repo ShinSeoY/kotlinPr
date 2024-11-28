@@ -7,7 +7,7 @@ class ExampleResponseDto(
         result: String,
         error: String?,
         val exampleResponse: List<ExampleResponse>?
-) : BaseResponseDto(code, result, error){
+) : BaseResponseDto(code, result, error) {
     companion object {
         fun success(response: List<ExampleResponse>?) = ExampleResponseDto(
                 code = "200",
@@ -25,10 +25,11 @@ class ExampleResponseDto(
     }
 }
 
-class ExampleResponse(val id: Long? = null,
-                      val name: String? = null,
-                      val numberArray: Array<Int>? = null,
-                      val stringArray: Array<String>? = null,
-                      val jsonData: Map<String, Any>? = null,
-                      val createdAt: LocalDateTime? = null,
-                      val updatedAt: LocalDateTime? = null)
+data class ExampleResponse(val id: Long? = null,
+                           val name: String? = null,
+                           val numberArray: Array<Int>? = null,
+                           val stringArray: Array<String>? = null,
+                           val jsonData: Map<String, Any>? = null,
+                           val createdAt: LocalDateTime? = null,
+                           val updatedAt: LocalDateTime? = null,
+                           val exampleSubResponseList: List<ExampleSubResponse>?)
