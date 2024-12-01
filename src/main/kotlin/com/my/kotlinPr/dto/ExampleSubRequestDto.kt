@@ -3,12 +3,13 @@ package com.my.kotlinPr.dto
 import com.my.kotlinPr.entity.Example
 import com.my.kotlinPr.entity.ExampleSub
 
-class ExampleSubRequestDto(
-        val name: String,
-        val exampleId: Long
+data class ExampleSubRequestDto(
+        val name: String? = null,
+        val exampleId: Long? = null
 ) {
     fun toEntity(example: Example) = ExampleSub(
-            name = this.name,
+            id = 0,
+            name = this.name.orEmpty(),
             example = example
     )
 }

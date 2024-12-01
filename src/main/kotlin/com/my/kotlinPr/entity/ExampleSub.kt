@@ -13,7 +13,7 @@ class ExampleSub(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = null,
+        var id: Long,
 
         @Column
         var name: String,

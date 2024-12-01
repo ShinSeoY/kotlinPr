@@ -19,23 +19,25 @@ class ExampleCustomRepositoryImpl(
 
     val qExample = QExample.example
     val qExampleSub = QExampleSub.exampleSub
-    override fun findWithSubsByExampleId(id: Long): List<Example> {
-        return jpaQueryFactory
-                .selectFrom(qExample)
-                .leftJoin(qExample.exampleSubs).fetchJoin()
-                .where(qExample.id.eq(id))
-                .fetch()
-    }
+    override fun findWithSubsByExampleId(id: Long): List<Example> =
+            jpaQueryFactory
+                    .selectFrom(qExample)
+                    .leftJoin(qExample.exampleSubs).fetchJoin()
+                    .where(qExample.id.eq(id))
+                    .fetch()
 
-    override fun findWithSubsByExampleIdWithPaging(pageable: Pageable): Page<Example> {
-        val query = jpaQueryFactory
-                .selectFrom(qExample)
-                .leftJoin(qExample.exampleSubs).fetchJoin()
 
-        val paginatedQuery = applyPagination(pageable, query)
-        val content = paginatedQuery.fetch()
-        val total = getCount(query)
+    override fun findWithSubsByExampleIdWithPaging(pageable: Pageable): Page<Example> =
+            jpaQueryFactory
+                    .selectFrom(qExample)
+                    .leftJoin(qExample.exampleSubs)
+                    .orderBy(qExample.createdAt.desc())
+                    .fetchJoin()
+                    .let {
+                        val paginatedQuery = applyPagination(pageable, it)
+                        val content = paginatedQuery.fetch()
+                        val total = getCount(it)
 
-        return PageImpl(content, pageable, total)
-    }
+                        PageImpl(content, pageable, total)
+                    }
 }

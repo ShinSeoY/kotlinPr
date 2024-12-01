@@ -25,8 +25,8 @@ class ExampleSubResponseDto(
     }
 }
 
-class ExampleSubResponse(val id: Long? = null,
-                         val name: String? = null,
-                         val exampleId: Long? = null,
+class ExampleSubResponse(val id: Long,
+                         val name: String,
+                         val exampleId: Long,
                          val createdAt: LocalDateTime? = null,
                          val updatedAt: LocalDateTime? = null)

@@ -40,8 +40,8 @@ class ExampleResponseDto(
     }
 }
 
-data class ExampleResponse(val id: Long? = null,
-                           val name: String? = null,
+data class ExampleResponse(val id: Long,
+                           val name: String,
                            val numberArray: List<Int>,
                            val stringArray: List<String>,
                            val jsonData: Map<String, Any>,

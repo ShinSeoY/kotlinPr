@@ -1,9 +1,6 @@
 package com.my.kotlinPr.controller
 
-import com.my.kotlinPr.dto.ExampleRequestDto
-import com.my.kotlinPr.dto.ExampleResponseDto
-import com.my.kotlinPr.dto.ExampleSubRequestDto
-import com.my.kotlinPr.dto.ExampleSubResponseDto
+import com.my.kotlinPr.dto.*
 import com.my.kotlinPr.entity.Example
 import com.my.kotlinPr.service.ExampleService
 import com.my.kotlinPr.utils.logger
@@ -24,7 +21,7 @@ class ExampleController(
     }
 
     @PostMapping("/dsl")
-    fun findAllWithDslAndPageable(@RequestBody page: Map<String, Any> ): ExampleResponseDto {
+    fun findAllWithDslAndPageable(@RequestBody page: PageRequestDto ): ExampleResponseDto {
         return exampleService.findAllWithDslAndPageable(page)
     }
 

@@ -9,7 +9,6 @@ import com.my.kotlinPr.repository.custom.ExampleCustomRepository
 import com.my.kotlinPr.repository.standard.ExampleRepository
 import com.my.kotlinPr.repository.standard.ExampleSubRepository
 import com.my.kotlinPr.utils.logger
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -37,41 +36,45 @@ class ExampleService(
 //                ?.let { "${it.name}<${it.email}>" }
 //    }
 
-    fun findOneWithDsl(id: Long): ExampleResponseDto {
-        try {
-            return ExampleResponseDto.success(exampleCustomRepository.findWithSubsByExampleId(id).map { it.toResponseDto() })
-        } catch (e: Exception) {
-            return ExampleResponseDto.error(e.message ?: "")
-        }
-    }
+    fun findOneWithDsl(id: Long): ExampleResponseDto =
+            try {
+                ExampleResponseDto.success(exampleCustomRepository.findWithSubsByExampleId(id).map { it.toResponseDto() })
+            } catch (e: Exception) {
+                ExampleResponseDto.error(e.message ?: "")
+            }
 
-    fun findAllWithDslAndPageable(page: Map<String, Any>): ExampleResponseDto {
-        val index = page["index"] as? Int ?: 0
-        val size = page["size"] as? Int ?: 10
-        val exampleResponseList = exampleCustomRepository.findWithSubsByExampleIdWithPaging(PageRequest.of(index, size)).toList().map { it.toResponseDto() }
-        return ExampleResponseDto.success(index, size, exampleResponseList)
-    }
 
-    fun saveSub(exampleSubRequestDto: ExampleSubRequestDto): ExampleSubResponseDto {
-        try {
-            val example = exampleRepository.findByIdOrNull(exampleSubRequestDto.exampleId)
-                    ?: throw Error("example is not exist")
-            return ExampleSubResponseDto.success(exampleSubRepository.save(exampleSubRequestDto.toEntity(example)).toResponseDto())
-        } catch (e: Exception) {
-            return ExampleSubResponseDto.error(e.message ?: "")
-        }
-    }
+    fun findAllWithDslAndPageable(page: PageRequestDto): ExampleResponseDto =
+            try {
+                exampleCustomRepository.findWithSubsByExampleIdWithPaging(page.toPageable())
+                        .map { it.toResponseDto() }
+                        .let {
+                            ExampleResponseDto.success(page.index, page.size, it.toList())
+                        }
+            } catch (e: Exception) {
+                ExampleResponseDto.error(e.message ?: "")
+            }
 
-    fun findAll(): ExampleResponseDto {
-        return ExampleResponseDto.success(exampleRepository.findAll().map { it.toResponseDto() })
-    }
+    fun saveSub(exampleSubRequestDto: ExampleSubRequestDto): ExampleSubResponseDto =
+            try {
+                val example = exampleRepository.findByIdOrNull(exampleSubRequestDto.exampleId)
+                        ?: throw Error("example is not exist")
+                // 아래에 있는 맨 마지막줄이 리턴됨
+                ExampleSubResponseDto.success(exampleSubRepository.save(exampleSubRequestDto.toEntity(example)).toResponseDto())
+            } catch (e: Exception) {
+                ExampleSubResponseDto.error(e.message ?: "")
+            }
 
-    fun findOne(id: Long): ExampleResponseDto {
-        return exampleRepository.findByIdOrNull(id)
-                ?.let {
-                    ExampleResponseDto.success(listOf(it.toResponseDto()))
-                } ?: ExampleResponseDto.error("empty data")
-    }
+
+    fun findAll(): ExampleResponseDto = ExampleResponseDto.success(exampleRepository.findAll().map { it.toResponseDto() })
+
+
+    fun findOne(id: Long): ExampleResponseDto =
+            exampleRepository.findByIdOrNull(id)
+                    ?.let {
+                        ExampleResponseDto.success(listOf(it.toResponseDto()))
+                    } ?: ExampleResponseDto.error("empty data")
+
 
     fun save(exampleRequestDto: ExampleRequestDto): ExampleResponseDto =
             ExampleResponseDto.success(listOf(exampleRepository.save(exampleRequestDto.toEntity()).toResponseDto()))
