@@ -73,9 +73,9 @@ class ExampleService(
                 } ?: ExampleResponseDto.error("empty data")
     }
 
-    fun save(exampleRequestDto: ExampleRequestDto): ExampleResponseDto {
-        return ExampleResponseDto.success(listOf(exampleRepository.save(exampleRequestDto.toEntity()).toResponseDto()))
-    }
+    fun save(exampleRequestDto: ExampleRequestDto): ExampleResponseDto =
+            ExampleResponseDto.success(listOf(exampleRepository.save(exampleRequestDto.toEntity()).toResponseDto()))
+
 
     fun delete(id: Long) = exampleRepository.deleteById(id)
 
@@ -83,8 +83,8 @@ class ExampleService(
             ExampleResponse(
                     id = this.id,
                     name = this.name,
-                    numberArray = this.numberArray,
-                    stringArray = this.stringArray,
+                    numberArray = this.numberArray.toList(),
+                    stringArray = this.stringArray.toList(),
                     jsonData = this.jsonData,
                     createdAt = this.createdAt,
                     updatedAt = this.updatedAt,

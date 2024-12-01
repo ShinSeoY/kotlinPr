@@ -42,9 +42,9 @@ class ExampleResponseDto(
 
 data class ExampleResponse(val id: Long? = null,
                            val name: String? = null,
-                           val numberArray: Array<Int>? = null,
-                           val stringArray: Array<String>? = null,
-                           val jsonData: Map<String, Any>? = null,
-                           val createdAt: LocalDateTime? = null,
-                           val updatedAt: LocalDateTime? = null,
+                           val numberArray: List<Int>,
+                           val stringArray: List<String>,
+                           val jsonData: Map<String, Any>,
+                           val createdAt: LocalDateTime?,
+                           val updatedAt: LocalDateTime?,
                            val exampleSubResponseList: List<ExampleSubResponse>?)
