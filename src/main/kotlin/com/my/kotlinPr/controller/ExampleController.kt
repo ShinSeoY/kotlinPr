@@ -15,6 +15,11 @@ class ExampleController(
 ) {
     private val log = logger<ExampleController>()
 
+    @GetMapping("coroutine/{id}")
+    suspend fun coroutineFindOne(@PathVariable id: Long): String {
+        return exampleService.coroutineFindOne(id)
+    }
+
     @GetMapping("/dsl/{id}")
     fun findOneWithDsl(@PathVariable id: Long): ExampleResponseDto {
         return exampleService.findOneWithDsl(id)
