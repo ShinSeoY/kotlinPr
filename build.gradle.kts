@@ -40,6 +40,10 @@ dependencies {
 	kapt ("jakarta.annotation:jakarta.annotation-api")
 	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 //	kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+	// coroutine
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.2")
 }
 
 kotlin {
