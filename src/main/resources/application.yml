@@ -6,6 +6,18 @@ spring:
       production: ""
     active: local
 
+cloud:
+  aws:
+    s3:
+      bucket: shinfirstbucket
+    region:
+      static: us-east-2
+    stack:
+      auto: false
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+
 #security:
 #  jwt:
 #    key-value: 2AA4B45D5FB9FF29B722A57E3E9FAAF4F2DC33326953338C5F9B92783E

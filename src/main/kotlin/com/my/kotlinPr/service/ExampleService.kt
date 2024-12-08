@@ -11,6 +11,9 @@ import com.my.kotlinPr.repository.standard.ExampleSubRepository
 import com.my.kotlinPr.utils.logger
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import kotlinx.coroutines.*
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Service
 class ExampleService(
@@ -35,6 +38,28 @@ class ExampleService(
 //        return userRepository.findById(id)
 //                ?.let { "${it.name}<${it.email}>" }
 //    }
+
+
+    suspend fun coroutineFindOne(id: Long): String = withContext(Dispatchers.IO) {
+        val starttime = LocalDateTime.now().second
+
+        var nameDeferred = async {
+            exampleRepository.findNameById(id)
+            delay(3000)
+        }
+        var createdAtDeferred = async {
+            exampleRepository.findCreatedAtById(id)
+            delay(3000)
+        }
+
+        val name = nameDeferred.await()
+        val createdAt = createdAtDeferred.await()
+
+        val endTime = LocalDateTime.now().second
+        println("${name} , $createdAt")
+        println("time.... ${endTime.minus(starttime)}")
+        "success"
+    }
 
     fun findOneWithDsl(id: Long): ExampleResponseDto =
             try {

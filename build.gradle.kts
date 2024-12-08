@@ -39,11 +39,18 @@ dependencies {
 	kapt ("jakarta.persistence:jakarta.persistence-api")
 	kapt ("jakarta.annotation:jakarta.annotation-api")
 	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
-//	kapt("org.springframework.boot:spring-boot-configuration-processor")
 
 	// coroutine
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.2")
+
+	// aws
+	implementation (platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1"))
+	implementation("io.awspring.cloud:spring-cloud-aws-starter-sqs")
+	implementation ("io.awspring.cloud:spring-cloud-aws-starter-s3")
+
+	// jsoup
+	implementation("org.jsoup:jsoup:1.15.3")
 }
 
 kotlin {
