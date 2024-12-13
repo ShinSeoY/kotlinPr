@@ -42,7 +42,7 @@ class AwsConfig(
                 .builder<Any>()
                 .configure { options: SqsContainerOptionsBuilder ->
                     options
-                            .acknowledgementMode(AcknowledgementMode.ALWAYS) // 메시지 성공수신 신호 전송 후, SQS는 이 메시지를 큐에서 제거
+                            .acknowledgementMode(AcknowledgementMode.MANUAL) // 수동으로 ack설정을 해줘야함. 수신받은 메시지를 큐에서 자동제거하고싶으면 ALWAYS
                             .acknowledgementInterval(Duration.ofSeconds(3)) // 3초마다 처리된 메시지의 수신 확인을 SQS에 전송
                             .acknowledgementThreshold(5) // 5개의 메시지가 처리되면, 그 때 수신 확인을 sqs에 전송 (위의 duration과는 or 관계)
                             .acknowledgementOrdering(AcknowledgementOrdering.ORDERED) // 메시지의 수신 확인을 보낼 때의 순서 지정
