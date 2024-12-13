@@ -44,7 +44,7 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.2")
 
-	// aws
+	// Spring Cloud AWS - 핵심 bean 들을 auto configuration 으로 제공
 	implementation (platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1"))
 	implementation("io.awspring.cloud:spring-cloud-aws-starter-sqs")
 	implementation ("io.awspring.cloud:spring-cloud-aws-starter-s3")
