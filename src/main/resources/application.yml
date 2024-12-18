@@ -5,18 +5,17 @@ spring:
       dev: ""
       production: ""
     active: local
-
-cloud:
-  aws:
-    s3:
-      bucket: shinfirstbucket
-    region:
-      static: us-east-2
-    stack:
-      auto: false
-    credentials:
-      access-key: ${ACCESS_KEY}
-      secret-key: ${SECRET_KEY}
+  cloud:
+    aws:
+      s3:
+        bucket: shinfirstbucket
+      region:
+        static: us-east-2
+      stack:
+        auto: false
+      credentials:
+        access-key: ${ACCESS_KEY}
+        secret-key: ${SECRET_KEY}
 
 #security:
 #  jwt:
